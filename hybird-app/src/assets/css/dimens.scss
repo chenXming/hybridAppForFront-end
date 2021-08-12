@@ -1,0 +1,7 @@
+// 定义预计跟元素的fontSize 已 iPhone 6、7、8 为设计图的标准
+$rootFontSize : 375 / 10;
+
+// 定义一个函数，把像素转换为函数
+@function px2rem($px){
+    @return $px / $rootFontSize + rem ;
+}
