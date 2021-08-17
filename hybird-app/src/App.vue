@@ -1,11 +1,14 @@
 <template>
-  <div id="nav">
-    <router-link to="/"></router-link>
+  <div id="app">
+    <!-- 所有的组件都会加载在 router-view 中 -->
+      <router-view />
   </div>
-  <router-view/>
 </template>
 
 <style lang="scss">
 @import '@css/style.scss';
-
+#app {
+  width: 100%;
+  height: 100%;
+}
 </style>

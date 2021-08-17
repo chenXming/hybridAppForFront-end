@@ -1,6 +1,7 @@
 <template>
     <div class="tool-bar">
-        <div class="tool-bar-item" v-for="(item,index) in toolBarData" :key="index">
+        <div class="tool-bar-item" @click="onChangeFragment(item,index)"
+         v-for="(item,index) in toolBarData" :key="index">
             <img class="tool-bar-item-img" :src="[index === selecItemIndex? item.hIocn: item.nIocn]" alt="" />
             <!-- 添加字体高亮类，后面是展示条件 -->
             <p class="tool-bar-item-name" :class="{'tool-bar-item-name-h' : index === selecItemIndex}">{{item.name}}</p>
@@ -42,22 +43,27 @@
                 selecItemIndex: 0,
             }
         },
+        methods: {
+            onChangeFragment(item,index){
+                this.selecItemIndex = index;
+                this.$emit("onchangeFragment",item.commponentsName);//向父组件传递参数
+            }
+        }
     }
 </script>
 
 <style lang="scss" scoped>
-@import '@css/style.scss';
-
-   .tool-bar {
+@import '@css/style.scss'; // 引入样式
+    .tool-bar {
         width: 100%;
         height: px2rem(46);
         display: flex;
         justify-content: space-around;
         background-color: white;
         box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.2);
-        border-top: 1px solid $lineColor;
+        border-top: 1px solid $lineColor;//这里定义的变量在 scss文件中
 
-        &-item {
+        &-item {// & 表示：.tool-bar
             text-align: center;
             padding: px2rem(4) px2rem(12);
             display: flex;
@@ -65,7 +71,7 @@
             justify-content: center;
             align-items: center;
 
-            &-img {
+            &-img {// &:表示.tool-bar-item
                 width: px2rem(22);
                 height: px2rem(22);
             }
@@ -81,4 +87,5 @@
         }
 
     }
+
 </style>
