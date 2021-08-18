@@ -1,15 +1,18 @@
-/* eslint-disable vue/no-unused-components */
 <template>
     <div class="mySwiper">
 <!-- 需要一个swiper，里面是swiperSlider,分页器配置用插槽设置 -->
  <!-- :navigation="{nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev'}" //前进后退按钮配置
               :pagination="{ clickable: true }" //分页器配置 指示器自定义指示器的类
               :autoplay="{autoplay: true}" //自动滚动
+              observer:true,//修改swiper自己或子元素时，自动初始化swiper
+               observeParents:true,//修改swiper的父元素时，自动初始化swiper ,必须添加 否则 网络加载会无法初始化 
               loop //循环模式 -->
        <swiper class="swiper-container"
               :navigation="{nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev'}" 
               :pagination="{ clickable: true, bulletClass:'custom-bullet-class'}"
               :autoplay="{autoplay: true}"
+              :observer="{observer: true}"
+              :observeParents="{observeParents:true}"
               loop >
            <swiper-slide v-for="(item,index) in swiperImgs" :key="index">
                <!-- 图片的高度 就是 swiper的高度 -->
@@ -29,7 +32,7 @@
 // import 'swiper/swiper.scss';
 import 'swiper/swiper-bundle.css';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import SwiperCore, { Navigation, Pagination, Scrollbar, A11y,Autoplay,} from 'swiper';
+import SwiperCore, { Navigation, Pagination, Scrollbar, A11y,Autoplay} from 'swiper';
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Autoplay]);
 
 
@@ -69,6 +72,11 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Autoplay]);
 <style lang="scss" >
 //scoped 注意这里如果是要自定义样式 还是需要去掉 scoped
 @import '@css/style.scss'; // 引入样式
+ // 图片的宽度
+    .swiper-slide-img {
+        width: 100%;
+    }
+
 .swiper-pagination{//自定义指示器的样式
    bottom: px2rem(12);
    .custom-bullet-class{  // 需要在上面👆🏻添加这个类名，自定义指示器

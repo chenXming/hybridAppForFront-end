@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <my-swiper :swiperImgs="swiperData" :height="swiperHieght"></my-swiper>
+        <my-swiper :swiperImgs="swiperData.map(item => item.icon)" :height="swiperHeight"></my-swiper>
     </div>
 </template>
 
@@ -14,20 +14,26 @@ import MySwiper from '@c/swiper/MySwiper.vue';
         },
         data() {
             return {
-                swiperData: [
-                    require('@img/swiper-1.jpg'),
-                    require('@img/swiper-2.jpg'),
-                    require('@img/swiper-3.jpg'),
-                    require('@img/swiper-4.jpg'),
-                    require('@img/swiper-5.jpg'),
-                ],
-                swiperHieght: '184px',
+                swiperData: [],
+                swiperHeight: '184px',
             }
         },
-        //程序入口
-        created(){ 
+        mounted (){
+           console.log('挂载了');
+          // this.makeRequestData();
+          this.initData();  
+        },
+        created (){
             console.log('created');
-            this.initData();
+        },
+        unmounted (){
+            console.log('unmounted');
+        },
+        activated (){ // 后续使用 store 控制页面的缓存，或者想其他办法
+            console.log('activated,缓存页面后重新进入了');
+        },
+        deactivated (){
+          console.log('deactivated,缓存页面退出了');
         },
         methods: {
             // 获取请求数据
@@ -36,7 +42,7 @@ import MySwiper from '@c/swiper/MySwiper.vue';
                 this.axios.get('/swiper')
                 .then(data => {
                     console.log(data);
-                    //this.swiperData = data.list;
+                    this.swiperData = data.list;
                 }).catch(error => {
                     console.log(error);
                     alert(error.message);
@@ -52,6 +58,5 @@ import MySwiper from '@c/swiper/MySwiper.vue';
 .home{
     width: 100%;
     height: 100%;
-    font-size: px2rem(32);
 }
 </style>
