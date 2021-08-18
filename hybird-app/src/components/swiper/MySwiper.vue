@@ -11,8 +11,8 @@
               :navigation="{nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev'}" 
               :pagination="{ clickable: true, bulletClass:'custom-bullet-class'}"
               :autoplay="{autoplay: true}"
-              :observer="{observer: true}"
-              :observeParents="{observeParents:true}"
+              observer
+              observeParents
               loop >
            <swiper-slide v-for="(item,index) in swiperImgs" :key="index">
                <!-- 图片的高度 就是 swiper的高度 -->
