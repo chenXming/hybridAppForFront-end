@@ -11,7 +11,7 @@
 <script>
 //异步组件的引入方式
 import { defineAsyncComponent } from 'vue';
-import ToolBar from '@c/ToolBar.vue';
+import ToolBar from '@c/currency/ToolBar.vue';
 
     export default {
         name: 'main',
