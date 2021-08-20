@@ -2,3 +2,13 @@
 @import './dimens.scss';
 @import './reset.scss';
 @import './colors.scss';
+
+// 文本两行显示类
+.text-line-2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+}
