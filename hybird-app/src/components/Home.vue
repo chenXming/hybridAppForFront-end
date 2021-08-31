@@ -1,5 +1,26 @@
 <template>
     <div class="home">
+        <navigation-bar  :isShowBack="false">
+            <!-- 左侧插槽 具名插槽的使用-->
+            <template v-slot:nav-left>
+                <img src="@img/more-white.svg" alt="">
+            </template>
+
+             <!-- 中间位置插槽 具名插槽的使用-->
+            <template v-slot:nav-center>
+                <!-- <p style="font-size: 30px">中间插槽</p> -->
+                <search :bgColor="'#ffffff'" 
+                :hintColor="'#999999'"
+                :icon="require('@img/search.svg')"
+                ></search>
+            </template>
+
+             <!-- 右侧位置插槽 具名插槽的使用-->
+            <template v-slot:nav-right>
+                <img src="@img/message-white.svg" alt="">
+            </template>
+        </navigation-bar>
+
         <div class="home-content">  
             <!-- swiperData.map(item => item.icon) 直接返回它的图片icon -->
             <my-swiper :swiperImgs="swiperData.map(item => item.icon)" :height="swiperHeight"></my-swiper>
@@ -31,6 +52,9 @@ import Activity from '@c/currency/Activity.vue';
 import ModeOPtions from '@c/currency/ModeOptions.vue';
 import Seconds from '@c/seconds/seconds.vue';
 import Goods from '@c/goods/Goods.vue';
+import { computed, getCurrentInstance, onMounted ,ref} from 'vue'
+import NavigationBar from './currency/NavigationBar.vue';
+import Search from './currency/Search.vue';
 
     export default {
         name:'home',
@@ -39,7 +63,9 @@ import Goods from '@c/goods/Goods.vue';
             'activity': Activity,
             'mode-options':ModeOPtions,
             'seconds':Seconds,
-            Goods
+            Goods,
+                NavigationBar,
+                Search,
         },
         data() {
             return {
@@ -49,10 +75,35 @@ import Goods from '@c/goods/Goods.vue';
                 secondsDatas: [],
             }
         },
+        setup() {
+             const internalInstance = getCurrentInstance()
+             const filters = internalInstance.appContext.config.globalProperties.$filters;
+             console.log('internalInstance.appContext.config.globalProperties',internalInstance.appContext.config.globalProperties);
+             console.log('filters----->',filters);
+             onMounted(()=>{
+                 console.log("setUp 内 onMounted 调用了");
+             });
+             let current = ref(0);
+             const testCompunted = computed( () => {
+                 console.log('调用了 current 计算属性',current.value);
+                 let newValue = current.value*2;
+                 return ref(newValue);
+             });
+
+             return {
+                 current,
+                 testCompunted,
+             }
+        },
         mounted (){
            console.log('挂载了');
+           console.log(this.$filters);
           // this.makeRequestData();
           this.initData();  
+          this.current++;
+          console.log("testCompunted.value",this.testCompunted.value);
+          console.log("testCompunted",this.testCompunted);
+        //   console.log("activity",this.$refs.activity.style);
         },
         created (){
             console.log('created');

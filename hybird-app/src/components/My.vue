@@ -1,16 +1,20 @@
 <template>
     <div class="my">
-        <h1>My</h1>
+        <navigation-bar :pageName="'我的'" :isShowBack="false"></navigation-bar>        
     </div>
 </template>
 
 <script>
+import NavigationBar from './currency/NavigationBar.vue'
+
     export default {
         name:'my',
         data() {
-            return {
+           return {
+
             }
         },
+        components: { NavigationBar },
     }
 </script>
 
@@ -20,7 +24,6 @@
 .my{
     width: 100%;
     height: 100%;
-    font-size: px2rem(32);
 
 }
 </style>

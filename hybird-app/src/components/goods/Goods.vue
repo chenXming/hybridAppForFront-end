@@ -11,10 +11,13 @@
             <img  class="goods-item-img" :src="item.img" alt="" :style="imgStyles[index]">
             <!-- 描述 -->
             <div class="goods-item-desc">
-                <p class="goods-item-desc-name">
+                <p class="goods-item-desc-name text-line-2 " :class="{'goods-item-desc-name-hint':!item.isHave}">
                     <!-- 是否是直营 跟 库存 -->
+                    <direct v-if="item.isDirect"></direct>
+                    <no-have v-if="!item.isHave"></no-have>
                     <!-- 这里的样式 在 style.scss编辑 -->
-                      <span class="text-line-2">{{item.name}}</span>
+                    {{item.name}}
+                      <!-- <span class="text-line-2"></span>  去掉span标签，让标签与内容在一行显示-->
                     </p>
                 <div class="goods-item-desc-data">
                     <p class="goods-item-desc-data-price">￥{{item.price}}</p>
@@ -27,6 +30,8 @@
 
 <script>
 import {onMounted,ref} from 'vue';
+import Direct from '@c/goods/Direct.vue';
+import NoHave from '@c/goods/NoHave.vue';
 
 
     export default {
@@ -43,6 +48,10 @@ import {onMounted,ref} from 'vue';
                 goodsItems:[],//获取所有Item Dom元素
 
           }
+        },
+        components: {
+            "no-have":NoHave,
+            "direct":Direct
         },
         props: {
 
@@ -125,7 +134,7 @@ import {onMounted,ref} from 'vue';
                    this.goodsItemStyle.push(goodsItemStyle);
                });
                //item 配置完成后，对比左右两侧高度，最大高度为 goods组件高度
-               this.goodsViewHeight = leftHeightTotal>rightHeightTotal?leftHeightTotal:rightHeightTotal + 'px';
+               this.goodsViewHeight = (leftHeightTotal>rightHeightTotal?leftHeightTotal:rightHeightTotal) + 'px';
 
            }
         },
@@ -163,6 +172,10 @@ import {onMounted,ref} from 'vue';
             &-name {
                 font-size: $infoSize;
                 line-height: px2rem(18);
+
+                &-hint {
+                    color: $hintColor;
+                }
             }
 
             &-data {

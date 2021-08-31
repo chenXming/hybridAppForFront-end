@@ -25,8 +25,11 @@ const app = createApp(App);
 //         }
 //     }
 // }
+app.config.globalProperties.$filters = () => {
+    filtersPriceValue(value => {
 
-
+    })
+}
 /**
  * 使用：this.axios.get(api).then...
  */
