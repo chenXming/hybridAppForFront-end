@@ -1,23 +1,24 @@
 <template>
-    <div class="home">
-        <navigation-bar  :isShowBack="false">
+<!-- scroll 监听页面的滑动，调用方法 onScrollChange -->
+    <div class="home" @scroll="onScrollChange">
+        <navigation-bar  :isShowBack="false" :navBarStyle="navBarStyle">
             <!-- 左侧插槽 具名插槽的使用-->
             <template v-slot:nav-left>
-                <img src="@img/more-white.svg" alt="">
+                <img :src="navBarCurrentSlotStyle.leftIcon" alt="" class="nav-icon">
             </template>
 
              <!-- 中间位置插槽 具名插槽的使用-->
             <template v-slot:nav-center>
                 <!-- <p style="font-size: 30px">中间插槽</p> -->
-                <search :bgColor="'#ffffff'" 
-                :hintColor="'#999999'"
-                :icon="require('@img/search.svg')"
+                <search :bgColor="navBarCurrentSlotStyle.search.bgColor" 
+                :hintColor="navBarCurrentSlotStyle.search.hintColor"
+                :icon="navBarCurrentSlotStyle.search.icon"
                 ></search>
             </template>
 
              <!-- 右侧位置插槽 具名插槽的使用-->
             <template v-slot:nav-right>
-                <img src="@img/message-white.svg" alt="">
+                <img :src="navBarCurrentSlotStyle.rightIcon" alt="" class="nav-icon">
             </template>
         </navigation-bar>
 
@@ -73,6 +74,44 @@ import Search from './currency/Search.vue';
                 swiperHeight: '184px',
                 activityDatas: [],
                 secondsDatas: [],
+                // navBar 插槽样式数据，页面未开始滑动，以及滑动到锚点后的插槽样式数据
+                navBarSlotStyle : {
+                    // 默认样式
+                    normal: {
+                        leftIcon: require('@img/more-white.svg'),
+                        // 中间插槽
+                        search: {
+                            bgColor: "#ffffff",
+                            hintColor:'#999999',
+                            icon: require('@img/search.svg')
+                        },
+                        rightIcon: require('@img/message-white.svg')
+                    },
+                    // 高亮样式
+                    heighlight: {
+                        leftIcon: require('@img/more.svg'),
+                        // 中间插槽
+                        search: {
+                            bgColor: "#d7d7d7",
+                            hintColor:'#ffffff',
+                            icon: require('@img/search-white.svg')
+                        },
+                        rightIcon: require('@img/message.svg')
+                    },
+                },
+                //navBar当前使用的插槽样式
+                navBarCurrentSlotStyle: {},
+                //navBar 整体定制样式
+                navBarStyle: {
+                    position: 'fixed',
+                    backgroundColor: ''
+                },
+
+                // 记录页面的滚动值
+                scrollTopValue:-1,
+                // 锚点值, 滚动超过多少时候变化
+                ANCHOR_SCROLL_TOP: 160
+
             }
         },
         setup() {
@@ -95,6 +134,7 @@ import Search from './currency/Search.vue';
                  testCompunted,
              }
         },
+       
         mounted (){
            console.log('挂载了');
            console.log(this.$filters);
@@ -104,9 +144,11 @@ import Search from './currency/Search.vue';
           console.log("testCompunted.value",this.testCompunted.value);
           console.log("testCompunted",this.testCompunted);
         //   console.log("activity",this.$refs.activity.style);
+          
         },
         created (){
             console.log('created');
+            this.navBarCurrentSlotStyle = this.navBarSlotStyle.normal;// 初始化nav插槽默认样式
         },
         unmounted (){
             console.log('unmounted');
@@ -150,7 +192,27 @@ import Search from './currency/Search.vue';
                    this.activityDatas = activityDatas.list;
                    this.secondsDatas = secondsData.list;
                }));
-            }
+            },
+            // 监听页面滑动，监听当前页面滚动距离
+            //  计算navBar 背景颜色的透明度
+            // 当前距离/ 锚点值 = 透明度 opacity
+            // 当 opacity >= 1 当前navBar 插槽样式变成 高亮
+            // opacity < 1，当前navBar 插槽为默认样式
+             onScrollChange($event) {
+                 //获取滚动距离
+                this.scrollTopValue = $event.target.scrollTop;
+                // 计算navBar 背景颜色 透明度
+                let opacity = this.scrollTopValue / this.ANCHOR_SCROLL_TOP;
+                // 插槽样式
+                if(opacity >= 1){
+                    this.navBarCurrentSlotStyle = this.navBarSlotStyle.heighlight;
+                }else{
+                    this.navBarCurrentSlotStyle = this.navBarSlotStyle.normal;
+                }
+                // 根据透明比例 设置Nabbar 颜色
+                this.navBarStyle.backgroundColor = 'rgba(255,255,255,'+opacity+')';
+
+             },
         },
     }
 </script>
@@ -189,5 +251,9 @@ import Search from './currency/Search.vue';
         }
     }
    
+   .nav-icon {
+       width: px2rem(26);
+       height: 100%;
+   }
 }
 </style>

@@ -15,3 +15,21 @@
 .z-index-max {
   z-index: 9999;
 }
+.z-index-2 {
+  z-index: 2;
+}
+//三角符号 标签 通用方式
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-top: px2rem(8) solid $mainColor;
+  border-left: px2rem(6) solid transparent;// 左右两边透明色
+  border-right: px2rem(6) solid transparent;
+  
+}
+
+
+
+
+

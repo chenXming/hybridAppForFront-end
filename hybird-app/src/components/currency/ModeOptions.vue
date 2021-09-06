@@ -1,7 +1,9 @@
 <template>
     <div class="mode-options">
         <div class="mode-options-item" v-for="(item,index) in dataSources"
-        :key="index">
+        :key="index"
+        @click="onItemClick(item)"
+        >
            <img class="mode-options-item-icon" :src="item.icon" alt="">
            <p class="mode-options-item-title">{{item.title}}</p>
         </div>
@@ -67,6 +69,13 @@
                 ]
             }
         },
+        methods: {
+            onItemClick(item){
+                this.$router.push({
+                    name:'goodsList' //路由注册的名称
+                })
+            }
+        }
     }
 </script>
 
